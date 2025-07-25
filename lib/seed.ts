@@ -58,21 +58,28 @@ async function clearStorage(): Promise<void> {
 }
 
 async function uploadImageToStorage(imageUrl: string) {
+    console.log("Uploading image from URL:", imageUrl);
+
     const response = await fetch(imageUrl);
     const blob = await response.blob();
 
+    console.log("creating file object for", imageUrl);
+
     const fileObj = {
         name: imageUrl.split("/").pop() || `file-${Date.now()}.jpg`,
-        type: blob.type,
+        type: blob.type || "image/png",
         size: blob.size,
         uri: imageUrl,
     };
+
+    console.log("File object created:", fileObj);
 
     const file = await storage.createFile(
         appwriteConfig.bucketId,
         ID.unique(),
         fileObj
     );
+    console.log("File uploaded:", file);
 
     return storage.getFileViewURL(appwriteConfig.bucketId, file.$id);
 }

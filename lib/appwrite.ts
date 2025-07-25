@@ -9,7 +9,7 @@ export const appwriteConfig = {
     bucketId: '68837795001088e50ec9',
     userCollectionId: '68836b22001362a55753',
     categoriesCollectionId: '68836c4c00097bbb6396',
-    menuCollectionId: '68836f77002534d80af9',
+    menuCollectionId: '68836d500017db2e04eb',
     customizationsCollectionId: '68836f77002534d80af9',
     menuCustomizationsCollectionId: '6883733a002a49a99124'
 }
