@@ -81,7 +81,8 @@ async function uploadImageToStorage(imageUrl: string) {
     );
     console.log("File uploaded:", file);
 
-    return storage.getFileViewURL(appwriteConfig.bucketId, file.$id);
+    return storage.getFilePreview(appwriteConfig.bucketId, file.$id).toString();
+
 }
 
 async function seed(): Promise<void> {
@@ -124,7 +125,7 @@ async function seed(): Promise<void> {
     const menuMap: Record<string, string> = {};
     for (const item of data.menu) {
         const uploadedImage = await uploadImageToStorage(item.image_url);
-
+        
         const doc = await databases.createDocument(
             appwriteConfig.databaseId,
             appwriteConfig.menuCollectionId,

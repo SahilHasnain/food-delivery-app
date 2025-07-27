@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {FlatList, Text, View} from 'react-native'
 import {SafeAreaView} from "react-native-safe-area-context";
 import useAppwrite from "@/lib/useAppwrite";
@@ -19,6 +20,7 @@ const Search = () => {
     const { data, refetch, loading } = useAppwrite({ fn: getMenu, params: { category,  query,  limit: 6, } });
     const { data: categories } = useAppwrite({ fn: getCategories });
 
+    
     useEffect(() => {
         refetch({ category, query, limit: 6})
     }, [category, query]);
