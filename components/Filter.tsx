@@ -6,7 +6,7 @@ import cn from "clsx";
 
 const Filter = ({ categories }: { categories: Category[] }) => {
     const searchParams = useLocalSearchParams();
-    const [active, setActive] = useState(searchParams.category || '');
+    const [active, setActive] = useState(searchParams.category || 'all');
 
     const handlePress = (id: string) => {
         setActive(id);

@@ -7,7 +7,8 @@ import {useEffect} from "react";
 import CartButton from "@/components/CartButton";
 import cn from "clsx";
 import MenuCard from "@/components/MenuCard";
-import {MenuItem} from "@/type";
+import {MenuItem, Category} from "@/type";
+
 
 import Filter from "@/components/Filter";
 import SearchBar from "@/components/SearchBar";
@@ -23,14 +24,14 @@ const Search = () => {
     }, [category, query]);
 
     return (
-        <SafeAreaView className="bg-white h-full">
+        <SafeAreaView className="h-full bg-white">
             <FlatList
                 data={data}
                 renderItem={({ item, index }) => {
-                    const isFirstRightColItem = index % 2 === 0;
+                    const isLeftColItem = index % 2 === 0;
 
                     return (
-                        <View className={cn("flex-1 max-w-[48%]", !isFirstRightColItem ? 'mt-10': 'mt-0')}>
+                        <View className={cn("flex-1 max-w-[48%]", !isLeftColItem ? 'mt-10': 'mt-0')}>
                             <MenuCard item={item as MenuItem} />
                         </View>
                     )
@@ -40,10 +41,10 @@ const Search = () => {
                 columnWrapperClassName="gap-7"
                 contentContainerClassName="gap-7 px-5 pb-32"
                 ListHeaderComponent={() => (
-                    <View className="my-5 gap-5">
-                        <View className="flex-between flex-row w-full">
+                    <View className="gap-5 my-5">
+                        <View className="flex-row w-full flex-between">
                             <View className="flex-start">
-                                <Text className="small-bold uppercase text-primary">Search</Text>
+                                <Text className="uppercase small-bold text-primary">Search</Text>
                                 <View className="flex-start flex-row gap-x-1 mt-0.5">
                                     <Text className="paragraph-semibold text-dark-100">Find your favorite food</Text>
                                 </View>
@@ -54,7 +55,7 @@ const Search = () => {
 
                         <SearchBar />
 
-                        <Filter categories={categories!} />
+                        <Filter categories={categories as Category[]} />
                     </View>
                 )}
                 ListEmptyComponent={() => !loading && <Text>No results</Text>}
