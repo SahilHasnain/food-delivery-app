@@ -2410,363 +2410,315 @@ This Appwrite hook provides:
 - Generic typing
 - Clean interface
 
-## Project Structure
+### 22. Database Seeding (`lib/seed.ts`)
 
-The project follows a modular architecture with clear separation of concerns:
-
-```
-food_ordering/
-├── app/           # Expo Router based navigation
-├── assets/        # Static assets (images, fonts, icons)
-├── components/    # Reusable UI components
-├── constants/     # Global constants and configurations
-├── lib/          # Core utilities and backend integration
-└── store/        # Global state management
+```typescript
+import { ID } from "react-native-appwrite";
+import { appwriteConfig, databases, storage } from "./appwrite";
+import dummyData from "./data";
 ```
 
-## Core Configuration Files
+**Import Analysis:**
 
-### `package.json`
+1. Appwrite utilities:
+   - ID generator for unique identifiers
+   - Configuration variables
+   - Database client instance
+   - Storage client instance
+2. Data source:
+   - Dummy data for initial population
 
-- Dependencies and scripts management
-- Key dependencies:
-  - expo: React Native development platform
-  - @react-navigation: Navigation framework
-  - nativewind: Tailwind CSS for React Native
-  - zustand: State management
-  - appwrite: Backend services
+```typescript
+interface Category {
+  name: string;
+  description: string;
+}
 
-### `tailwind.config.js`
+interface Customization {
+  name: string;
+  price: number;
+  type: "topping" | "side" | "size" | "crust" | string; // extend as needed
+}
 
-- NativeWind configuration
-- Custom theme settings
-- Responsive breakpoints
-- Custom color palette
+interface MenuItem {
+  name: string;
+  description: string;
+  image_url: string;
+  price: number;
+  rating: number;
+  calories: number;
+  protein: number;
+  category_name: string;
+  customizations: string[]; // list of customization names
+}
 
-### `tsconfig.json`
+interface DummyData {
+  categories: Category[];
+  customizations: Customization[];
+  menu: MenuItem[];
+}
+```
 
-- TypeScript configuration
-- Path aliases
-- Compiler options
-- Type checking rules
+**Type Definitions:**
 
-### `babel.config.js`
+1. Data models:
+   - Category with name and description
+   - Customization with name, price, and type
+   - Menu item with complete details
+2. Container interface:
+   - Structured format for dummy data
+   - Type validation for imported data
 
-- Babel transpilation settings
-- Plugin configurations
-- Module resolver settings
+```typescript
+// ensure dummyData has correct shape
+const data = dummyData as DummyData;
+```
 
-## App Directory
+**Data Preparation:**
 
-### `app/_layout.tsx`
+1. Type assertion:
+   - Ensures proper structure
+   - Validates data format
+   - Provides type safety
 
-- Root layout component
-- Global navigation container
-- Theme provider
-- Authentication state handling
-- Error boundary
+```typescript
+async function clearAll(collectionId: string): Promise<void> {
+  const list = await databases.listDocuments(
+    appwriteConfig.databaseId,
+    collectionId
+  );
 
-### `app/(auth)/_layout.tsx`
+  await Promise.all(
+    list.documents.map((doc) =>
+      databases.deleteDocument(appwriteConfig.databaseId, collectionId, doc.$id)
+    )
+  );
+}
+```
 
-- Authentication flow layout
-- Stack navigation for auth screens
-- Protected route handling
+**Collection Clearing:**
 
-### `app/(auth)/sign-in.tsx`
+1. Listing:
+   - Fetches all documents
+   - Uses collection ID
+2. Deletion:
+   - Parallel processing with Promise.all
+   - Removes each document
+   - Preserves collection structure
 
-- Login screen implementation
-- Email/password authentication
-- Form validation
+```typescript
+async function clearStorage(): Promise<void> {
+  const list = await storage.listFiles(appwriteConfig.bucketId);
+
+  await Promise.all(
+    list.files.map((file) =>
+      storage.deleteFile(appwriteConfig.bucketId, file.$id)
+    )
+  );
+}
+```
+
+**Storage Clearing:**
+
+1. File listing:
+   - Gets all files in bucket
+2. Deletion:
+   - Parallel removal
+   - Uses file IDs
+   - Complete cleanup
+
+```typescript
+async function uploadImageToStorage(imageUrl: string) {
+  console.log("Uploading image from URL:", imageUrl);
+
+  const response = await fetch(imageUrl);
+  const blob = await response.blob();
+
+  console.log("creating file object for", imageUrl);
+
+  const fileObj = {
+    name: imageUrl.split("/").pop() || `file-${Date.now()}.jpg`,
+    type: blob.type || "image/png",
+    size: blob.size,
+    uri: imageUrl,
+  };
+
+  console.log("File object created:", fileObj);
+
+  const file = await storage.createFile(
+    appwriteConfig.bucketId,
+    ID.unique(),
+    fileObj
+  );
+  console.log("File uploaded:", file);
+
+  return storage.getFileViewURL(appwriteConfig.bucketId, file.$id);
+}
+```
+
+**Image Upload:**
+
+1. Fetch process:
+   - Gets image from URL
+   - Converts to blob
+2. File preparation:
+   - Extracts name from URL
+   - Fallback naming with timestamp
+   - Preserves MIME type
+3. Upload:
+   - Creates file in storage bucket
+   - Generates unique ID
+   - Returns viewable URL
+
+```typescript
+async function seed(): Promise<void> {
+  // 1. Clear all
+  await clearAll(appwriteConfig.categoriesCollectionId);
+  await clearAll(appwriteConfig.customizationsCollectionId);
+  await clearAll(appwriteConfig.menuCollectionId);
+  await clearAll(appwriteConfig.menuCustomizationsCollectionId);
+  await clearStorage();
+```
+
+**Seeding Process - Cleanup:**
+
+1. Collection clearing:
+   - Categories removal
+   - Customizations removal
+   - Menu items removal
+   - Relationship clearing
+2. Storage:
+   - Removes all files
+   - Clean slate for new images
+
+```typescript
+// 2. Create Categories
+const categoryMap: Record<string, string> = {};
+for (const cat of data.categories) {
+  const doc = await databases.createDocument(
+    appwriteConfig.databaseId,
+    appwriteConfig.categoriesCollectionId,
+    ID.unique(),
+    cat
+  );
+  categoryMap[cat.name] = doc.$id;
+}
+```
+
+**Category Creation:**
+
+1. Map initialization:
+   - Tracks category IDs
+   - Uses names as keys
+2. Document creation:
+   - Inserts each category
+   - Generates unique IDs
+   - Stores complete category data
+
+```typescript
+// 3. Create Customizations
+const customizationMap: Record<string, string> = {};
+for (const cus of data.customizations) {
+  const doc = await databases.createDocument(
+    appwriteConfig.databaseId,
+    appwriteConfig.customizationsCollectionId,
+    ID.unique(),
+    {
+      name: cus.name,
+      price: cus.price,
+      type: cus.type,
+    }
+  );
+  customizationMap[cus.name] = doc.$id;
+}
+```
+
+**Customization Creation:**
+
+1. Map initialization:
+   - Tracks customization IDs
+   - Uses names as keys
+2. Document creation:
+   - Inserts each customization
+   - Includes pricing and type
+   - Maps for relationship building
+
+```typescript
+  // 4. Create Menu Items
+  const menuMap: Record<string, string> = {};
+  for (const item of data.menu) {
+    const uploadedImage = await uploadImageToStorage(item.image_url);
+
+    const doc = await databases.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.menuCollectionId,
+      ID.unique(),
+      {
+        name: item.name,
+        description: item.description,
+        image_url: uploadedImage,
+        price: item.price,
+        rating: item.rating,
+        calories: item.calories,
+        protein: item.protein,
+        categories: categoryMap[item.category_name],
+      }
+    );
+
+    menuMap[item.name] = doc.$id;
+```
+
+**Menu Item Creation:**
+
+1. Image handling:
+   - Uploads from URL
+   - Stores in Appwrite storage
+   - Gets viewable URL
+2. Document creation:
+   - Creates menu item
+   - Links to category
+   - Includes detailed information
+   - Nutritional data
+
+```typescript
+    // 5. Create menu_customizations
+    for (const cusName of item.customizations) {
+      await databases.createDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.menuCustomizationsCollectionId,
+        ID.unique(),
+        {
+          menu: doc.$id,
+          customizations: customizationMap[cusName],
+        }
+      );
+    }
+  }
+
+  console.log("✅ Seeding complete.");
+}
+
+export default seed;
+```
+
+**Relationship Building:**
+
+1. Many-to-many mapping:
+   - Links menu items to customizations
+   - Uses junction collection
+   - Creates separate documents
+2. Completion:
+   - Success logging
+   - Default export
+
+This seeding utility provides:
+
+- Database initialization
+- Image uploading
+- Document creation
+- Relationship building
+- Type safety
 - Error handling
-- Navigation to signup
-
-### `app/(auth)/sign-up.tsx`
-
-- Registration screen
-- User account creation
-- Form validation
-- Success/error handling
-- Navigation to signin
-
-### `app/(tabs)/_layout.tsx`
-
-- Bottom tab navigation setup
-- Tab icons and labels
-- Tab bar styling
-- Screen transitions
-
-### `app/(tabs)/index.tsx`
-
-- Home screen
-- Menu listing
-- Category filters
-- Featured items
-- Search integration
-
-### `app/(tabs)/cart.tsx`
-
-- Shopping cart screen
-- Cart items listing
-- Quantity controls
-- Price calculation
-- Checkout flow
-
-### `app/(tabs)/search.tsx`
-
-- Search functionality
-- Filter options
-- Search results display
-- Dynamic filtering
-
-### `app/(tabs)/profile.tsx`
-
-- User profile screen
-- Account details
-- Order history
-- Settings
-- Logout functionality
-
-## Components
-
-### `components/CartButton.tsx`
-
-```typescript
-// Features:
-- Floating cart button
-- Cart items counter
-- Animation on item add
-- Navigation to cart
-- Dynamic badge updating
-```
-
-### `components/CartItem.tsx`
-
-```typescript
-// Features:
-- Individual cart item display
-- Quantity controls
-- Price calculation
-- Remove item functionality
-- Image with fallback
-```
-
-### `components/CustomButton.tsx`
-
-```typescript
-// Features:
-- Reusable button component
-- Multiple variants (primary, secondary, outline)
-- Loading state
-- Disabled state
-- Touch feedback
-```
-
-### `components/CustomHeader.tsx`
-
-```typescript
-// Features:
-- Screen header component
-- Back navigation
-- Title display
-- Right action buttons
-- Dynamic styling
-```
-
-### `components/CustomInput.tsx`
-
-```typescript
-// Features:
-- Text input wrapper
-- Error state handling
-- Label support
-- Icon integration
-- Validation integration
-```
-
-### `components/Filter.tsx`
-
-```typescript
-// Features:
-- Category filtering
-- Multi-select support
-- Active state indication
-- Horizontal scrolling
-- Custom styling
-```
-
-### `components/MenuCard.tsx`
-
-```typescript
-// Features:
-- Food item display card
-- Image with loading state
-- Price formatting
-- Add to cart action
-- Animation effects
-```
-
-### `components/SearchBar.tsx`
-
-```typescript
-// Features:
-- Search input field
-- Search icon
-- Clear button
-- Debounced input
-- Search suggestions
-```
-
-## State Management
-
-### `store/auth.store.ts`
-
-```typescript
-// Features:
-- User authentication state
-- Login/logout actions
-- Token management
-- Persistent session
-- Error handling
-```
-
-### `store/cart.store.ts`
-
-```typescript
-// Features:
-- Cart items management
-- Add/remove items
-- Quantity updates
-- Total calculation
-- Cart persistence
-```
-
-## Backend Integration
-
-### `lib/appwrite.ts`
-
-```typescript
-// Features:
-- Appwrite client configuration
-- API endpoints setup
-- Project settings
-- Database collections
-- Storage buckets
-```
-
-### `lib/useAppwrite.ts`
-
-```typescript
-// Features:
-- Custom hook for Appwrite
-- Authentication methods
-- Database operations
-- File storage operations
-- Error handling
-```
-
-### `lib/seed.ts`
-
-```typescript
-// Features:
-- Database seeding
-- Initial data creation
-- Test data generation
-- Collection setup
-- Data validation
-```
-
-## Data and Constants
-
-### `constants/index.ts`
-
-```typescript
-// Contains:
-- API endpoints
-- Theme constants
-- Navigation routes
-- Error messages
-- Configuration values
-```
-
-### `lib/data.ts`
-
-```typescript
-// Contains:
-- Menu items data
-- Categories
-- Pricing information
-- Item descriptions
-- Image references
-```
-
-## Assets
-
-### Fonts
-
-- Quicksand family (Light to Bold)
-- Used for consistent typography
-
-### Icons
-
-- Custom icon set
-- Navigation icons
-- Action icons
-- UI elements
-
-### Images
-
-- Food item photos
-- UI graphics
-- Branding assets
-- Placeholder images
-
-## Type Definitions
-
-### `type.d.ts`
-
-```typescript
-// Global type definitions:
-- User interface
-- Menu item interface
-- Cart item interface
-- API response types
-- Navigation params
-```
-
-## Development Workflow
-
-1. **Authentication Flow**
-   - User opens app
-   - Checks authentication status
-   - Redirects to auth or main flow
-
-2. **Main Flow**
-   - Browse menu items
-   - Search and filter
-   - Add items to cart
-   - Manage cart
-   - Checkout process
-
-3. **State Updates**
-   - Auth state changes
-   - Cart modifications
-   - UI updates
-   - API interactions
-
-## Performance Considerations
-
-- Image optimization
-- State management efficiency
-- Navigation performance
-- API call optimization
-- Cache management
-
-## Security Features
-
-- Token-based authentication
-- Input validation
-- Data encryption
-- Session management
-- Error handling
-
-This documentation provides a comprehensive overview of each file and its role in the application. Understanding these components will give you a complete picture of how the application works and how to modify or extend it.
+- Clean interface
+- Complete data setup
+- Storage management
