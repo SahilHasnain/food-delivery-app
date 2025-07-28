@@ -5,9 +5,10 @@ import CustomHeader from "@/components/CustomHeader";
 import cn from "clsx";
 import CustomButton from "@/components/CustomButton";
 import CartItem from "@/components/CartItem";
+import { PaymentInfoStripeProps } from '@/type';
 
 const PaymentInfoStripe = ({ label,  value,  labelStyle,  valueStyle, }: PaymentInfoStripeProps) => (
-    <View className="flex-between flex-row my-1">
+    <View className="flex-row my-1 flex-between">
         <Text className={cn("paragraph-medium text-gray-200", labelStyle)}>
             {label}
         </Text>
@@ -24,7 +25,7 @@ const Cart = () => {
     const totalPrice = getTotalPrice();
 
     return (
-        <SafeAreaView className="bg-white h-full">
+        <SafeAreaView className="h-full bg-white">
             <FlatList
                 data={items}
                 renderItem={({ item }) => <CartItem item={item} />}
@@ -34,8 +35,8 @@ const Cart = () => {
                 ListEmptyComponent={() => <Text>Cart Empty</Text>}
                 ListFooterComponent={() => totalItems > 0 && (
                     <View className="gap-5">
-                        <View className="mt-6 border border-gray-200 p-5 rounded-2xl">
-                            <Text className="h3-bold text-dark-100 mb-5">
+                        <View className="p-5 mt-6 border border-gray-200 rounded-2xl">
+                            <Text className="mb-5 h3-bold text-dark-100">
                                 Payment Summary
                             </Text>
 
@@ -52,7 +53,7 @@ const Cart = () => {
                                 value={`- $0.50`}
                                 valueStyle="!text-success"
                             />
-                            <View className="border-t border-gray-300 my-2" />
+                            <View className="my-2 border-t border-gray-300" />
                             <PaymentInfoStripe
                                 label={`Total`}
                                 value={`$${(totalPrice + 5 - 0.5).toFixed(2)}`}
