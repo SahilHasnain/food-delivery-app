@@ -2,6 +2,7 @@ import { Text, TouchableOpacity, Image, Platform } from "react-native";
 import { MenuItem } from "@/type";
 import { appwriteConfig } from "@/lib/appwrite";
 import { useCartStore } from "@/store/cart.store";
+import { useRouter } from "expo-router";
 
 const MenuCard = ({
   item: { $id, image_url, name, price },
@@ -12,8 +13,13 @@ const MenuCard = ({
     `${image_url}?project=${appwriteConfig.projectId}`
   );
   const { addItem } = useCartStore();
+  const router = useRouter();
 
   console.log(imageUrl);
+
+  const handleCardPress = () => {
+    router.push(`/product/${$id}`);
+  };
 
   return (
     <TouchableOpacity
@@ -23,6 +29,7 @@ const MenuCard = ({
           ? { elevation: 10, shadowColor: "#878787" }
           : {}
       }
+      onPress={handleCardPress}
     >
       <Image
         source={{ uri: imageUrl }}
@@ -37,19 +44,21 @@ const MenuCard = ({
       </Text>
       <Text className="mb-4 text-gray-200 body-regular">From ${price}</Text>
       <TouchableOpacity
-        onPress={() =>
+        onPress={(e) => {
+          e.stopPropagation(); // Prevent triggering the parent TouchableOpacity
           addItem({
             id: $id,
             name,
             price,
             image_url: imageUrl,
             customizations: [],
-          })
-        }
+          });
+        }}
       >
         <Text className="paragraph-bold text-primary">Add to Cart +</Text>
       </TouchableOpacity>
     </TouchableOpacity>
   );
 };
+
 export default MenuCard;
