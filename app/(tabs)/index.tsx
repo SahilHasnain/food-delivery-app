@@ -14,11 +14,24 @@ import { images, offers } from "@/constants";
 import useAppwrite from "@/lib/useAppwrite";
 import { getCategories } from "@/lib/appwrite";
 import { Category } from "@/type";
+// import seed from "@/lib/seed"; // retained for future database seeding
 import { useRouter } from "expo-router";
 
 export default function Index() {
   const router = useRouter();
   const { data: categories } = useAppwrite({ fn: getCategories });
+  /*
+  // database seeding function (uncomment to use)
+  const handleSeed = async () => {
+    try {
+      await seed();
+      Alert.alert("Success", "Database seeded successfully!");
+    } catch (error) {
+      Alert.alert("Error", "Failed to seed database. Check console for details.");
+      console.error("Seed error:", error);
+    }
+  };
+  */
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -94,6 +107,9 @@ export default function Index() {
 
               <CartButton />
             </View>
+            {/* <TouchableOpacity onPress={handleSeed} className="py-3 mb-4 rounded-full bg-primary">
+              <Text className="font-bold text-center text-white">Seed Database</Text>
+            </TouchableOpacity> */}
           </View>
         )}
       />
