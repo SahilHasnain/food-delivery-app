@@ -10,7 +10,7 @@ const MenuCard = ({
   item: MenuItem;
 }) => {
   const imageUrl = encodeURI(
-    `${image_url}?project=${appwriteConfig.projectId}`
+    `${image_url}?project=${appwriteConfig.projectId}`,
   );
   const { addItem } = useCartStore();
   const router = useRouter();

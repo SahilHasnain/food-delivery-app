@@ -1974,7 +1974,7 @@ import { create } from "zustand";
 ```typescript
 function areCustomizationsEqual(
   a: CartCustomization[] = [],
-  b: CartCustomization[] = []
+  b: CartCustomization[] = [],
 ): boolean {
   if (a.length !== b.length) return false;
 
@@ -2223,7 +2223,7 @@ export const createUser = async ({
       appwriteConfig.databaseId,
       appwriteConfig.userCollectionId,
       ID.unique(),
-      { email, name, accountId: newAccount.$id, avatar: avatarUrl }
+      { email, name, accountId: newAccount.$id, avatar: avatarUrl },
     );
   } catch (e) {
     throw new Error(e as string);
@@ -2253,7 +2253,7 @@ export const getMenu = async ({ category, query }: GetMenuParams) => {
     const menus = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.menuCollectionId,
-      queries
+      queries,
     );
 
     return menus.documents;
@@ -2356,7 +2356,7 @@ const fetchData = useCallback(
       setLoading(false);
     }
   },
-  [fn]
+  [fn],
 );
 ```
 
@@ -2485,13 +2485,17 @@ const data = dummyData as DummyData;
 async function clearAll(collectionId: string): Promise<void> {
   const list = await databases.listDocuments(
     appwriteConfig.databaseId,
-    collectionId
+    collectionId,
   );
 
   await Promise.all(
     list.documents.map((doc) =>
-      databases.deleteDocument(appwriteConfig.databaseId, collectionId, doc.$id)
-    )
+      databases.deleteDocument(
+        appwriteConfig.databaseId,
+        collectionId,
+        doc.$id,
+      ),
+    ),
   );
 }
 ```
@@ -2512,8 +2516,8 @@ async function clearStorage(): Promise<void> {
 
   await Promise.all(
     list.files.map((file) =>
-      storage.deleteFile(appwriteConfig.bucketId, file.$id)
-    )
+      storage.deleteFile(appwriteConfig.bucketId, file.$id),
+    ),
   );
 }
 ```
@@ -2548,7 +2552,7 @@ async function uploadImageToStorage(imageUrl: string) {
   const file = await storage.createFile(
     appwriteConfig.bucketId,
     ID.unique(),
-    fileObj
+    fileObj,
   );
   console.log("File uploaded:", file);
 
@@ -2599,7 +2603,7 @@ for (const cat of data.categories) {
     appwriteConfig.databaseId,
     appwriteConfig.categoriesCollectionId,
     ID.unique(),
-    cat
+    cat,
   );
   categoryMap[cat.name] = doc.$id;
 }
@@ -2627,7 +2631,7 @@ for (const cus of data.customizations) {
       name: cus.name,
       price: cus.price,
       type: cus.type,
-    }
+    },
   );
   customizationMap[cus.name] = doc.$id;
 }

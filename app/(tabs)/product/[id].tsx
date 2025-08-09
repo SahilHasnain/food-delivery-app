@@ -31,7 +31,7 @@ const ProductDetails = () => {
         const response = await databases.listDocuments(
           appwriteConfig.databaseId,
           appwriteConfig.menuCollectionId,
-          [Query.equal("$id", id)]
+          [Query.equal("$id", id)],
         );
 
         if (response.documents.length > 0) {
@@ -57,7 +57,7 @@ const ProductDetails = () => {
   const handleAddToCart = () => {
     if (product) {
       const imageUrl = encodeURI(
-        `${product.image_url}?project=${appwriteConfig.projectId}`
+        `${product.image_url}?project=${appwriteConfig.projectId}`,
       );
 
       for (let i = 0; i < quantity; i++) {
@@ -93,12 +93,15 @@ const ProductDetails = () => {
   }
 
   const imageUrl = encodeURI(
-    `${product.image_url}?project=${appwriteConfig.projectId}`
+    `${product.image_url}?project=${appwriteConfig.projectId}`,
   );
 
   return (
-    <ScrollView className="flex-1 bg-white">
-      <View className="p-4 pt-12">
+    <ScrollView
+      className="flex-1 bg-white"
+      contentContainerStyle={{ flexGrow: 1 }}
+    >
+      <View className="flex-1 p-4 pt-12">
         {/* Header with back button and search */}
         <View className="flex-row items-center justify-between mb-4">
           <TouchableOpacity onPress={() => router.back()} className="p-2">
@@ -123,7 +126,9 @@ const ProductDetails = () => {
         <View className="flex-row mb-6">
           {/* Product info */}
           <View className="flex-1 pr-2">
-            <Text className="mb-1 font-bold base-bold  text-dark-100 !text-2xl">{product.name}</Text>
+            <Text className="mb-1 font-bold base-bold  text-dark-100 !text-2xl">
+              {product.name}
+            </Text>
             <Text className="mb-2 text-gray-200 body-medium !text-[16px] font-medium">
               {product.categories.name}
             </Text>
@@ -220,45 +225,43 @@ const ProductDetails = () => {
         </View>
 
         {/* Add to cart section */}
-        <View className="flex-row items-center bg-white shadow px-[18px] py-4 rounded-[20px] ">
-          <View className="flex-row items-center mr-4">
+        <View className="justify-end flex-1 py-12">
+          <View className="flex-row items-center bg-white shadow px-[18px] py-4 rounded-[20px]">
+            <View className="flex-row items-center mr-4">
+              <TouchableOpacity onPress={decrementQuantity} className="p-2">
+                <Image
+                  source={images.minus}
+                  className="size-5"
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+              <Text className="mx-3 text-xl font-bold font-quicksand-bold text-dark-100">
+                {quantity}
+              </Text>
+              <TouchableOpacity onPress={incrementQuantity} className="p-2">
+                <Image
+                  source={images.plus}
+                  className="size-5"
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+            </View>
+
             <TouchableOpacity
-              onPress={decrementQuantity}
-              className="p-2"
+              onPress={handleAddToCart}
+              className="flex-row items-center justify-center flex-1 px-6 py-4 rounded-full bg-primary"
             >
               <Image
-                source={images.minus}
-                className="size-5"
+                source={images.bag}
+                className="mr-2 size-5"
                 resizeMode="contain"
+                tintColor="#fff"
               />
-            </TouchableOpacity>
-            <Text className="mx-3 text-xl font-bold font-quicksand-bold text-dark-100">{quantity}</Text>
-            <TouchableOpacity
-              onPress={incrementQuantity}
-              className="p-2"
-            >
-              <Image
-                source={images.plus}
-                className="size-5"
-                resizeMode="contain"
-              />
+              <Text className="text-white body-bold">
+                Add to Cart (${(product.price * quantity).toFixed(2)})
+              </Text>
             </TouchableOpacity>
           </View>
-
-          <TouchableOpacity
-            onPress={handleAddToCart}
-            className="flex-row items-center justify-center flex-1 px-6 py-4 rounded-full bg-primary"
-          >
-            <Image
-              source={images.bag}
-              className="mr-2 size-5"
-              resizeMode="contain"
-              tintColor="#fff"
-            />
-            <Text className="text-white body-bold">
-              Add to Cart (${(product.price * quantity).toFixed(2)})
-            </Text>
-          </TouchableOpacity>
         </View>
       </View>
     </ScrollView>

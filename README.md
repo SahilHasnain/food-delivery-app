@@ -63,23 +63,21 @@ If you're getting started and need assistance or face any bugs, join our active 
 
 - **[Sentry](https://jsm.dev/rn-food-sentry)** is a powerful error tracking and performance monitoring tool for React Native apps. It helps you detect, diagnose, and fix issues in real-time to improve app stability and user experience.
 
-
-
 ## <a name="features">🔋 Features</a>
 
 ### Features of the Mobile Movie AppProject
 
-👉 **Google Authentication**: Secure and seamless user sign-ins using Google.  
+👉 **Google Authentication**: Secure and seamless user sign-ins using Google.
 
-👉 **Home Page**: Showcases the latest offers and directs users to filtered search results.  
+👉 **Home Page**: Showcases the latest offers and directs users to filtered search results.
 
-👉 **Search Page**: Lets users explore all foods with category filters and keyword search.  
+👉 **Search Page**: Lets users explore all foods with category filters and keyword search.
 
-👉 **Product Details Page**: Displays food images, key details, and allows adding items to the cart.  
+👉 **Product Details Page**: Displays food images, key details, and allows adding items to the cart.
 
-👉 **Cart Page**: Review selected items and see the total price.  
+👉 **Cart Page**: Review selected items and see the total price.
 
-👉 **Profile Page**: Manage user settings and preferences.  
+👉 **Profile Page**: Manage user settings and preferences.
 
 👉 **Appwrite Integration**: Handles backend database and file storage for food items.
 

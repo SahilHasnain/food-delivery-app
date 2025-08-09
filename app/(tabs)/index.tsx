@@ -26,7 +26,7 @@ export default function Index() {
     } catch (error) {
       Alert.alert(
         "Error",
-        "Failed to seed database. Check console for details."
+        "Failed to seed database. Check console for details.",
       );
       console.error("Seed error:", error);
     }
@@ -44,7 +44,7 @@ export default function Index() {
               <Pressable
                 className={cn(
                   "offer-card",
-                  isEven ? "flex-row-reverse" : "flex-row"
+                  isEven ? "flex-row-reverse" : "flex-row",
                 )}
                 style={{ backgroundColor: item.color }}
                 android_ripple={{ color: "#fffff22" }}
@@ -62,7 +62,7 @@ export default function Index() {
                     <View
                       className={cn(
                         "offer-card__info",
-                        isEven ? "pl-10" : "pr-10"
+                        isEven ? "pl-10" : "pr-10",
                       )}
                     >
                       <Text className="leading-tight text-white h1-bold">

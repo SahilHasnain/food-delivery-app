@@ -16,7 +16,7 @@ const TabBarIcon = ({ focused, icon, title }: TabBarIconProps) => (
     <Text
       className={cn(
         "text-sm font-bold",
-        focused ? "text-primary" : "text-gray-200"
+        focused ? "text-primary" : "text-gray-200",
       )}
     >
       {title}
@@ -96,6 +96,7 @@ export default function TabLayout() {
         name="product/[id]"
         options={{
           title: "Product Details",
+          tabBarStyle: { display: "none" },
           tabBarItemStyle: { display: "none" }, // Hide from tab bar
           headerShown: false,
         }}

@@ -40,7 +40,7 @@ const useAppwrite = <T, P extends Record<string, string | number>>({
         setLoading(false);
       }
     },
-    [fn]
+    [fn],
   );
 
   useEffect(() => {
