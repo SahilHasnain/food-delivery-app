@@ -1,0 +1,6 @@
+detail product page
+
+sabse pehle back arrow and search button justify bw
+below this product name below this product type
+below this stars if 5 the 5 start if 4 then 4 start and this should be taken from database right to this for eg 4.9/5 below this pricing from database below this calories with value below calroies, protein likwise with flex jst bw among calries and protein.
+below calories and protein Bun Type value niche. product name se lekaar yaha tak ek div me wrap karna hai aur phir 2nd div me image with just bw and gap and 50% for each div.Below Free delivery with $dollar icon befor , 20-30 mins with clock icon before and rating from database with star icon before. Below the description of the product from database 
