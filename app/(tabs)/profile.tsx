@@ -13,19 +13,24 @@ import useAuthStore from "@/store/auth.store";
 import { images } from "@/constants";
 import { ProfileFieldProps } from "@/type";
 import { logout } from "@/lib/appwrite";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const styles = StyleSheet.create({
   scrollViewContent: {
-    paddingBottom: 150, // Add extra padding at the bottom to account for the tab bar
+    paddingBottom: 50, // Add extra padding at the bottom to account for the tab bar
   },
 });
 
 const ProfileField = ({ label, value, icon }: ProfileFieldProps) => (
-  <View className="flex-row items-center gap-4 p-4 mb-3 bg-white rounded-lg">
-    <Image source={icon} className="size-6" resizeMode="contain" />
+  <View className="flex-row items-center gap-2.5">
+    <View className="flex items-center justify-center rounded-full size-12 bg-primary/5">
+      <Image source={icon} className="size-5" resizeMode="contain" />
+    </View>
     <View className="flex-1">
-      <Text className="text-xs text-gray-500">{label}</Text>
-      <Text className="mt-1 text-dark-100 base-medium">{value}</Text>
+      <Text className="text-gray-500 body-medium !text-[12.25px]">{label}</Text>
+      <Text className="mt-1 text-dark-100 base-semibold !text-[14.25px]">
+        {value}
+      </Text>
     </View>
   </View>
 );
@@ -62,9 +67,10 @@ const Profile = () => {
   }
 
   return (
-    <View className="flex-1 bg-gray-50">
+    <SafeAreaView className="flex-1 bg-white-100">
       {/* Custom header with back arrow, Profile text in middle, search icon on right */}
-      <View className="flex-row items-center justify-between px-4 pt-10 pb-4">
+
+      <View className="flex-row items-center justify-between p-4">
         <TouchableOpacity onPress={() => router.back()}>
           <Image
             source={images.arrowBack}
@@ -117,11 +123,11 @@ const Profile = () => {
         </View>
 
         {/* User Details */}
-        <View className="mb-6">
+        <View className="bg-white rounded-[20px] px-3.5 py-5 gap-[30px] mb-8">
           <ProfileField
             label="Full Name"
             value={user.name || "Not specified"}
-            icon={images.person}
+            icon={images.user}
           />
 
           <ProfileField
@@ -132,19 +138,19 @@ const Profile = () => {
 
           <ProfileField
             label="Phone Number"
-            value="+1 (555) 123-4567"
+            value="+91 00000 12345"
             icon={images.phone}
           />
 
           <ProfileField
             label="Address 1 - (Home)"
-            value="123 Main Street, Apt 4B, New York, NY 10001"
+            value="12A, Connaught Place, New Delhi, Delhi 110001"
             icon={images.home}
           />
 
           <ProfileField
             label="Address 2 - (Work)"
-            value="456 Business Ave, Suite 200, New York, NY 10002"
+            value="9B, Connaught Place, New Delhi, Delhi 110001"
             icon={images.location}
           />
         </View>
@@ -152,26 +158,26 @@ const Profile = () => {
         {/* Action Buttons */}
         <View className="mb-20">
           <TouchableOpacity
-            className="items-center py-4 mb-3 bg-white rounded-lg"
+            className="items-center mb-3 bg-primary/5 border border-primary py-3.5 px-4 rounded-[100px]"
             onPress={handleEditProfile}
           >
-            <Text className="base-semibold text-primary">Edit Profile</Text>
+            <Text className="base-bold text-primary">Edit Profile</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            className="flex-row items-center justify-center gap-2 py-4 bg-white rounded-lg"
+            className="flex-row items-center justify-center gap-2 py-3.5 px-4 bg-error/5 border border-error rounded-[100px]"
             onPress={handleLogout}
           >
             <Image
               source={images.logout}
-              className="size-5"
+              className="size-6"
               resizeMode="contain"
             />
-            <Text className="text-red-500 base-semibold">Logout</Text>
+            <Text className="text-error base-bold">Logout</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
