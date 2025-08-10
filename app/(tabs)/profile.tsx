@@ -109,7 +109,7 @@ const Profile = () => {
                 // As mentioned in requirements, this edit icon doesn't have any function
                 Alert.alert(
                   "Info",
-                  "Avatar edit functionality not implemented as per requirements"
+                  "Avatar edit functionality not implemented as per requirements",
                 );
               }}
             >
@@ -175,13 +175,6 @@ const Profile = () => {
             />
             <Text className="text-error base-bold">Logout</Text>
           </TouchableOpacity>
-        </View>
-
-        {/* Developer Credits */}
-        <View className="items-center mb-10">
-          <Text className="text-gray-400 !text-[12px]">
-            Developed by Sahil Hasnain
-          </Text>
         </View>
       </ScrollView>
     </SafeAreaView>

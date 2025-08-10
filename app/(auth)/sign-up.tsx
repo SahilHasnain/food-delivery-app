@@ -4,6 +4,7 @@ import CustomInput from "@/components/CustomInput";
 import CustomButton from "@/components/CustomButton";
 import { useState } from "react";
 import { createUser } from "@/lib/appwrite";
+import DeveloperCredit from "@/components/DeveloperCredit";
 
 const SignUp = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -32,7 +33,7 @@ const SignUp = () => {
   };
 
   return (
-    <View className="gap-10 bg-white rounded-lg p-5 mt-5">
+    <View className="gap-10 p-5 pb-10 mt-5 bg-white rounded-lg">
       <CustomInput
         placeholder="Enter your full name"
         value={form.name}
@@ -58,14 +59,15 @@ const SignUp = () => {
 
       <CustomButton title="Sign Up" isLoading={isSubmitting} onPress={submit} />
 
-      <View className="flex justify-center mt-5 flex-row gap-2">
-        <Text className="base-regular text-gray-100">
+      <View className="flex flex-row justify-center gap-2 mt-5">
+        <Text className="text-gray-100 base-regular">
           Already have an account?
         </Text>
         <Link href="/sign-in" className="base-bold text-primary">
           Sign In
         </Link>
       </View>
+      <DeveloperCredit className="mb-4 -mt-8" />
     </View>
   );
 };

@@ -5,6 +5,7 @@ import CustomButton from "@/components/CustomButton";
 import { useState } from "react";
 import { signIn } from "@/lib/appwrite";
 import * as Sentry from "@sentry/react-native";
+import DeveloperCredit from "@/components/DeveloperCredit";
 
 const SignIn = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -62,6 +63,7 @@ const SignIn = () => {
           Sign Up
         </Link>
       </View>
+      <DeveloperCredit />
     </View>
   );
 };

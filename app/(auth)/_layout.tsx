@@ -11,6 +11,7 @@ import {
 import { Redirect, Slot } from "expo-router";
 import { images } from "@/constants";
 import useAuthStore from "@/store/auth.store";
+import DeveloperCredit from "@/components/DeveloperCredit";
 
 export default function AuthLayout() {
   const { isAuthenticated } = useAuthStore();
