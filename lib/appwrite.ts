@@ -12,14 +12,17 @@ import { CreateUserPrams, GetMenuParams, SignInParams } from "@/type";
 export const appwriteConfig = {
   endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT!,
   projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!,
-  platform: "com.sahil.fooddelivery",
-  databaseId: "68836a6f002e3915b961",
-  bucketId: "68837795001088e50ec9",
-  userCollectionId: "68836b22001362a55753",
-  categoriesCollectionId: "68836c4c00097bbb6396",
-  menuCollectionId: "68836d500017db2e04eb",
-  customizationsCollectionId: "68836f77002534d80af9",
-  menuCustomizationsCollectionId: "6883733a002a49a99124",
+  platform: process.env.EXPO_PUBLIC_APPWRITE_PLATFORM!,
+  databaseId: process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID!,
+  bucketId: process.env.EXPO_PUBLIC_APPWRITE_BUCKET_ID!,
+  userCollectionId: process.env.EXPO_PUBLIC_APPWRITE_USER_COLLECTION_ID!,
+  categoriesCollectionId:
+    process.env.EXPO_PUBLIC_APPWRITE_CATEGORIES_COLLECTION_ID!,
+  menuCollectionId: process.env.EXPO_PUBLIC_APPWRITE_MENU_COLLECTION_ID!,
+  customizationsCollectionId:
+    process.env.EXPO_PUBLIC_APPWRITE_CUSTOMIZATIONS_COLLECTION_ID!,
+  menuCustomizationsCollectionId:
+    process.env.EXPO_PUBLIC_APPWRITE_MENU_CUSTOMIZATIONS_COLLECTION_ID!,
 };
 
 export const client = new Client();
@@ -51,7 +54,7 @@ export const createUser = async ({
       appwriteConfig.databaseId,
       appwriteConfig.userCollectionId,
       ID.unique(),
-      { email, name, accountId: newAccount.$id, avatar: avatarUrl },
+      { email, name, accountId: newAccount.$id, avatar: avatarUrl }
     );
   } catch (e) {
     throw new Error(e as string);
@@ -74,7 +77,7 @@ export const getCurrentUser = async () => {
     const currentUser = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.userCollectionId,
-      [Query.equal("accountId", currentAccount.$id)],
+      [Query.equal("accountId", currentAccount.$id)]
     );
 
     if (!currentUser) throw Error;
@@ -96,7 +99,7 @@ export const getMenu = async ({ category, query }: GetMenuParams) => {
     const menus = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.menuCollectionId,
-      queries,
+      queries
     );
 
     return menus.documents;
@@ -109,7 +112,7 @@ export const getCategories = async () => {
   try {
     const categories = await databases.listDocuments(
       appwriteConfig.databaseId,
-      appwriteConfig.categoriesCollectionId,
+      appwriteConfig.categoriesCollectionId
     );
 
     return categories.documents;
