@@ -29,17 +29,9 @@
         "expo-splash-screen",
         {
           "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
-        }
-      ],
-      [
-        "@sentry/react-native/expo",
-        {
-          "url": "https://sentry.io/",
-          "project": "jsm_reactnative_food-ordering",
-          "organization": "jsmpro"
+          "resizeMode": "cover",
+          "backgroundColor": "#ffffff",
+          "statusBarTranslucent": true
         }
       ]
     ],

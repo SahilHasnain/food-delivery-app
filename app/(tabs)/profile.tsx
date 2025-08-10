@@ -176,6 +176,13 @@ const Profile = () => {
             <Text className="text-error base-bold">Logout</Text>
           </TouchableOpacity>
         </View>
+
+        {/* Developer Credits */}
+        <View className="items-center mb-10">
+          <Text className="text-gray-400 !text-[12px]">
+            Developed by Sahil Hasnain
+          </Text>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
