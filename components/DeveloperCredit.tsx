@@ -8,7 +8,7 @@ type DeveloperCreditProps = {
 const DeveloperCredit: React.FC<DeveloperCreditProps> = ({ className }) => {
   return (
     <TouchableOpacity
-      onPress={() => Linking.openURL("https://sahilhasnain.com")}
+      onPress={() => Linking.openURL("https://sahilhasnain.tech")}
       activeOpacity={0.7}
       className={`mt-5 items-center ${className ?? ""}`}
     >
