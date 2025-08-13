@@ -3,7 +3,7 @@ import { Link, router } from "expo-router";
 import CustomInput from "@/components/CustomInput";
 import CustomButton from "@/components/CustomButton";
 import { useState } from "react";
-import { createUser } from "@/lib/appwrite";
+import { createUser, signIn } from "@/lib/appwrite";
 import DeveloperCredit from "@/components/DeveloperCredit";
 import useAuthStore from "@/store/auth.store";
 
@@ -24,6 +24,8 @@ const SignUp = () => {
 
     try {
       await createUser({ email, password, name });
+      
+        await signIn({ email, password });
       // Ensure global auth state is refreshed before navigating
       await useAuthStore.getState().fetchAuthenticatedUser();
       router.replace("/");
