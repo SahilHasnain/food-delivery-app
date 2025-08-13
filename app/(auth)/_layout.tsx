@@ -10,7 +10,6 @@ import {
 import { Redirect, Slot } from "expo-router";
 import { images } from "@/constants";
 import useAuthStore from "@/store/auth.store";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function AuthLayout() {
   const { isAuthenticated } = useAuthStore();
@@ -18,7 +17,7 @@ export default function AuthLayout() {
   if (isAuthenticated) return <Redirect href="/" />;
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
@@ -28,7 +27,7 @@ export default function AuthLayout() {
           contentInsetAdjustmentBehavior="automatic"
           keyboardShouldPersistTaps="handled"
           keyboardDismissMode={
-            Platform.OS === "ios" ? "interactive" : "on-drag"
+            Platform.OS === "ios" ? "interactive" : "interactive"
           }
           style={{ flex: 1, backgroundColor: "#fff" }}
         >
@@ -49,6 +48,6 @@ export default function AuthLayout() {
           <Slot />
         </ScrollView>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    
   );
 }

@@ -61,7 +61,7 @@ const SignIn = () => {
           Sign Up
         </Link>
       </View>
-      <DeveloperCredit className="-mt-1" />
+      <DeveloperCredit className="mt-[-4px]" />
     </View>
   );
 };
