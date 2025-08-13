@@ -54,7 +54,7 @@ export const createUser = async ({
       appwriteConfig.databaseId,
       appwriteConfig.userCollectionId,
       ID.unique(),
-      { email, name, accountId: newAccount.$id, avatar: avatarUrl }
+      { email, name, accountId: newAccount.$id, avatar: avatarUrl },
     );
   } catch (e) {
     throw new Error(e as string);
@@ -77,7 +77,7 @@ export const getCurrentUser = async () => {
     const currentUser = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.userCollectionId,
-      [Query.equal("accountId", currentAccount.$id)]
+      [Query.equal("accountId", currentAccount.$id)],
     );
 
     if (!currentUser) throw Error;
@@ -99,7 +99,7 @@ export const getMenu = async ({ category, query }: GetMenuParams) => {
     const menus = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.menuCollectionId,
-      queries
+      queries,
     );
 
     return menus.documents;
@@ -112,7 +112,7 @@ export const getCategories = async () => {
   try {
     const categories = await databases.listDocuments(
       appwriteConfig.databaseId,
-      appwriteConfig.categoriesCollectionId
+      appwriteConfig.categoriesCollectionId,
     );
 
     return categories.documents;

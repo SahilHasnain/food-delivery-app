@@ -17,7 +17,7 @@ const SignUp = () => {
     if (!name || !email || !password)
       return Alert.alert(
         "Error",
-        "Please enter valid email address & password."
+        "Please enter valid email address & password.",
       );
 
     setIsSubmitting(true);

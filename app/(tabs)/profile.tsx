@@ -115,7 +115,7 @@ const Profile = () => {
                 // As mentioned in requirements, this edit icon doesn't have any function
                 Alert.alert(
                   "Info",
-                  "Avatar edit functionality not implemented yet"
+                  "Avatar edit functionality not implemented yet",
                 );
               }}
             >

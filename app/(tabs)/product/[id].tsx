@@ -2,15 +2,17 @@ import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
-  Image,
   TouchableOpacity,
   ScrollView,
   ActivityIndicator,
+  Image as RNImage,
 } from "react-native";
+import { Image } from "expo-image";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { MenuItem } from "@/type";
 import { appwriteConfig, databases } from "@/lib/appwrite";
 import { images } from "@/constants";
+import { buildAppwriteImageUrl, prefetchImages } from "@/lib/image";
 import { Query } from "react-native-appwrite";
 import { useCartStore } from "@/store/cart.store";
 import FocusAwareStatusBar from "@/components/FocusAwareStatusBar";
@@ -32,7 +34,7 @@ const ProductDetails = () => {
         const response = await databases.listDocuments(
           appwriteConfig.databaseId,
           appwriteConfig.menuCollectionId,
-          [Query.equal("$id", id)]
+          [Query.equal("$id", id)],
         );
 
         if (response.documents.length > 0) {
@@ -57,8 +59,9 @@ const ProductDetails = () => {
 
   const handleAddToCart = () => {
     if (product) {
-      const imageUrl = encodeURI(
-        `${product.image_url}?project=${appwriteConfig.projectId}`
+      const imageUrl = buildAppwriteImageUrl(
+        product.image_url,
+        appwriteConfig.projectId,
       );
 
       for (let i = 0; i < quantity; i++) {
@@ -74,6 +77,15 @@ const ProductDetails = () => {
       router.back();
     }
   };
+
+  const imageUrl = product
+    ? buildAppwriteImageUrl(product.image_url, appwriteConfig.projectId)
+    : "";
+
+  // Prefetch hero image once product is loaded
+  useEffect(() => {
+    if (imageUrl) prefetchImages([imageUrl]);
+  }, [imageUrl]);
 
   if (loading) {
     return (
@@ -93,10 +105,6 @@ const ProductDetails = () => {
     );
   }
 
-  const imageUrl = encodeURI(
-    `${product.image_url}?project=${appwriteConfig.projectId}`
-  );
-
   return (
     <ScrollView
       className="flex-1 bg-white"
@@ -111,7 +119,7 @@ const ProductDetails = () => {
         {/* Header with back button and search */}
         <View className="flex-row items-center justify-between mb-4">
           <TouchableOpacity onPress={() => router.back()} className="p-2">
-            <Image
+            <RNImage
               source={images.arrowBack}
               className="size-6"
               resizeMode="contain"
@@ -121,7 +129,7 @@ const ProductDetails = () => {
             onPress={() => router.push("/search")}
             className="p-2"
           >
-            <Image
+            <RNImage
               source={images.search}
               className="size-6"
               resizeMode="contain"
@@ -188,8 +196,11 @@ const ProductDetails = () => {
           <View className="items-center justify-center flex-1">
             <Image
               source={{ uri: imageUrl }}
-              className="size-48"
-              resizeMode="contain"
+              style={{ width: 192, height: 192 }}
+              contentFit="contain"
+              transition={200}
+              cachePolicy="memory-disk"
+              priority="high"
             />
           </View>
         </View>
@@ -197,7 +208,7 @@ const ProductDetails = () => {
         {/* Delivery info */}
         <View className="flex-row justify-between mb-6">
           <View className="flex-row items-center">
-            <Image
+            <RNImage
               source={images.dollar}
               className="mr-2 size-5"
               resizeMode="contain"
@@ -205,7 +216,7 @@ const ProductDetails = () => {
             <Text className="body-medium text-dark-100">Free Delivery</Text>
           </View>
           <View className="flex-row items-center">
-            <Image
+            <RNImage
               source={images.clock}
               className="mr-2 size-5"
               resizeMode="contain"
@@ -213,7 +224,7 @@ const ProductDetails = () => {
             <Text className="body-medium text-dark-100">20-30 mins</Text>
           </View>
           <View className="flex-row items-center">
-            <Image
+            <RNImage
               source={images.star}
               className="mr-2 size-5"
               resizeMode="contain"
@@ -235,7 +246,7 @@ const ProductDetails = () => {
           <View className="flex-row items-center bg-white shadow px-[18px] py-4 rounded-[20px]">
             <View className="flex-row items-center mr-4">
               <TouchableOpacity onPress={decrementQuantity} className="p-2">
-                <Image
+                <RNImage
                   source={images.minus}
                   className="size-5"
                   resizeMode="contain"
@@ -245,7 +256,7 @@ const ProductDetails = () => {
                 {quantity}
               </Text>
               <TouchableOpacity onPress={incrementQuantity} className="p-2">
-                <Image
+                <RNImage
                   source={images.plus}
                   className="size-5"
                   resizeMode="contain"
@@ -257,7 +268,7 @@ const ProductDetails = () => {
               onPress={handleAddToCart}
               className="flex-row items-center justify-center flex-1 px-6 py-4 rounded-full bg-primary"
             >
-              <Image
+              <RNImage
                 source={images.bag}
                 className="mr-2 size-5"
                 resizeMode="contain"

@@ -48,7 +48,7 @@ export default function Index() {
           const handleOfferPress = () => {
             if (!categories) return;
             const match = (categories as Category[]).find((cat) =>
-              item.name.toLowerCase().includes(cat.name.toLowerCase())
+              item.name.toLowerCase().includes(cat.name.toLowerCase()),
             );
             const params = match ? { category: match.$id } : {};
             router.push({ pathname: "/search", params });
@@ -59,7 +59,7 @@ export default function Index() {
                 onPress={handleOfferPress}
                 className={cn(
                   "offer-card",
-                  isEven ? "flex-row-reverse" : "flex-row"
+                  isEven ? "flex-row-reverse" : "flex-row",
                 )}
                 style={{ backgroundColor: item.color }}
                 android_ripple={{ color: "#fffff22" }}
@@ -76,7 +76,7 @@ export default function Index() {
                   <View
                     className={cn(
                       "offer-card__info",
-                      isEven ? "pl-10" : "pr-10"
+                      isEven ? "pl-10" : "pr-10",
                     )}
                   >
                     <Text className="leading-tight text-white h1-bold">

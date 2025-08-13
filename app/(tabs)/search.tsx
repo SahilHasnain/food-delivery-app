@@ -2,7 +2,7 @@
 import { FlatList, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import useAppwrite from "@/lib/useAppwrite";
-import { getCategories, getMenu } from "@/lib/appwrite";
+import { getCategories, getMenu, appwriteConfig } from "@/lib/appwrite";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect } from "react";
 import CartButton from "@/components/CartButton";
@@ -13,6 +13,7 @@ import { MenuItem, Category } from "@/type";
 import Filter from "@/components/Filter";
 import SearchBar from "@/components/SearchBar";
 import FocusAwareStatusBar from "@/components/FocusAwareStatusBar";
+import { buildAppwriteImageUrl, prefetchImages } from "@/lib/image";
 
 const Search = () => {
   const { category, query } = useLocalSearchParams<{
@@ -30,6 +31,15 @@ const Search = () => {
     refetch({ category, query, limit: 6 });
   }, [category, query]);
 
+  // Prefetch visible menu images when data changes
+  useEffect(() => {
+    if (!data || !Array.isArray(data)) return;
+    const urls = (data as MenuItem[]).map((m) =>
+      buildAppwriteImageUrl(m.image_url, appwriteConfig.projectId),
+    );
+    prefetchImages(urls);
+  }, [data]);
+
   return (
     <SafeAreaView className="h-full bg-white">
       <FocusAwareStatusBar
@@ -46,7 +56,7 @@ const Search = () => {
             <View
               className={cn(
                 "flex-1 max-w-[48%]",
-                !isLeftColItem ? "mt-10" : "mt-0"
+                !isLeftColItem ? "mt-10" : "mt-0",
               )}
             >
               <MenuCard item={item as MenuItem} />
