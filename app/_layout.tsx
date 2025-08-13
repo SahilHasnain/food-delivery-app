@@ -4,7 +4,6 @@ import { View, Image, StyleSheet, Platform } from "react-native";
 import { Stack, useRouter } from "expo-router";
 import { useFonts } from "expo-font";
 import useAuthStore from "@/store/auth.store";
-import * as SystemUI from "expo-system-ui";
 import * as NavigationBar from "expo-navigation-bar";
 import { StatusBar } from "expo-status-bar";
 
@@ -36,7 +35,6 @@ export default function RootLayout() {
     if (Platform.OS === "android") {
       (async () => {
         try {
-          await SystemUI.setBackgroundColorAsync("#ffffff");
           await NavigationBar.setBackgroundColorAsync("#000000");
           await NavigationBar.setButtonStyleAsync("light");
           await NavigationBar.setVisibilityAsync("visible");
