@@ -6,6 +6,7 @@ import cn from "clsx";
 import CustomButton from "@/components/CustomButton";
 import CartItem from "@/components/CartItem";
 import { PaymentInfoStripeProps } from "@/type";
+import FocusAwareStatusBar from "@/components/FocusAwareStatusBar";
 
 const PaymentInfoStripe = ({
   label,
@@ -31,6 +32,11 @@ const Cart = () => {
 
   return (
     <SafeAreaView className="h-full bg-white">
+      <FocusAwareStatusBar
+        style="dark"
+        backgroundColor="#ffffff"
+        translucent={true}
+      />
       <FlatList
         data={items}
         renderItem={({ item }) => <CartItem item={item} />}

@@ -12,6 +12,7 @@ import { MenuItem, Category } from "@/type";
 
 import Filter from "@/components/Filter";
 import SearchBar from "@/components/SearchBar";
+import FocusAwareStatusBar from "@/components/FocusAwareStatusBar";
 
 const Search = () => {
   const { category, query } = useLocalSearchParams<{
@@ -31,6 +32,11 @@ const Search = () => {
 
   return (
     <SafeAreaView className="h-full bg-white">
+      <FocusAwareStatusBar
+        style="dark"
+        backgroundColor="#ffffff"
+        translucent={true}
+      />
       <FlatList
         data={data}
         renderItem={({ item, index }) => {
@@ -40,7 +46,7 @@ const Search = () => {
             <View
               className={cn(
                 "flex-1 max-w-[48%]",
-                !isLeftColItem ? "mt-10" : "mt-0",
+                !isLeftColItem ? "mt-10" : "mt-0"
               )}
             >
               <MenuCard item={item as MenuItem} />

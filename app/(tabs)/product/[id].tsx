@@ -13,6 +13,7 @@ import { appwriteConfig, databases } from "@/lib/appwrite";
 import { images } from "@/constants";
 import { Query } from "react-native-appwrite";
 import { useCartStore } from "@/store/cart.store";
+import FocusAwareStatusBar from "@/components/FocusAwareStatusBar";
 
 const ProductDetails = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -31,7 +32,7 @@ const ProductDetails = () => {
         const response = await databases.listDocuments(
           appwriteConfig.databaseId,
           appwriteConfig.menuCollectionId,
-          [Query.equal("$id", id)],
+          [Query.equal("$id", id)]
         );
 
         if (response.documents.length > 0) {
@@ -57,7 +58,7 @@ const ProductDetails = () => {
   const handleAddToCart = () => {
     if (product) {
       const imageUrl = encodeURI(
-        `${product.image_url}?project=${appwriteConfig.projectId}`,
+        `${product.image_url}?project=${appwriteConfig.projectId}`
       );
 
       for (let i = 0; i < quantity; i++) {
@@ -93,7 +94,7 @@ const ProductDetails = () => {
   }
 
   const imageUrl = encodeURI(
-    `${product.image_url}?project=${appwriteConfig.projectId}`,
+    `${product.image_url}?project=${appwriteConfig.projectId}`
   );
 
   return (
@@ -101,6 +102,11 @@ const ProductDetails = () => {
       className="flex-1 bg-white"
       contentContainerStyle={{ flexGrow: 1 }}
     >
+      <FocusAwareStatusBar
+        style="dark"
+        backgroundColor="#ffffff"
+        translucent={true}
+      />
       <View className="flex-1 p-4 pt-12">
         {/* Header with back button and search */}
         <View className="flex-row items-center justify-between mb-4">

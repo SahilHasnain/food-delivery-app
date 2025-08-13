@@ -14,6 +14,7 @@ import { images } from "@/constants";
 import { ProfileFieldProps } from "@/type";
 import { logout } from "@/lib/appwrite";
 import { SafeAreaView } from "react-native-safe-area-context";
+import FocusAwareStatusBar from "@/components/FocusAwareStatusBar";
 
 const styles = StyleSheet.create({
   scrollViewContent: {
@@ -68,6 +69,11 @@ const Profile = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-white-100">
+      <FocusAwareStatusBar
+        style="dark"
+        backgroundColor="#ffffff"
+        translucent={true}
+      />
       {/* Custom header with back arrow, Profile text in middle, search icon on right */}
 
       <View className="flex-row items-center justify-between p-4">
@@ -109,7 +115,7 @@ const Profile = () => {
                 // As mentioned in requirements, this edit icon doesn't have any function
                 Alert.alert(
                   "Info",
-                  "Avatar edit functionality not implemented yet",
+                  "Avatar edit functionality not implemented yet"
                 );
               }}
             >

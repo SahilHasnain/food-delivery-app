@@ -16,6 +16,7 @@ import { getCategories } from "@/lib/appwrite";
 import { Category } from "@/type";
 // import seed from "@/lib/seed"; // retained for future database seeding
 import { useRouter } from "expo-router";
+import FocusAwareStatusBar from "@/components/FocusAwareStatusBar";
 
 export default function Index() {
   const router = useRouter();
@@ -35,6 +36,11 @@ export default function Index() {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
+      <FocusAwareStatusBar
+        style="dark"
+        backgroundColor="#ffffff"
+        translucent={true}
+      />
       <FlatList
         data={offers}
         renderItem={({ item, index }) => {
@@ -42,7 +48,7 @@ export default function Index() {
           const handleOfferPress = () => {
             if (!categories) return;
             const match = (categories as Category[]).find((cat) =>
-              item.name.toLowerCase().includes(cat.name.toLowerCase()),
+              item.name.toLowerCase().includes(cat.name.toLowerCase())
             );
             const params = match ? { category: match.$id } : {};
             router.push({ pathname: "/search", params });
@@ -53,7 +59,7 @@ export default function Index() {
                 onPress={handleOfferPress}
                 className={cn(
                   "offer-card",
-                  isEven ? "flex-row-reverse" : "flex-row",
+                  isEven ? "flex-row-reverse" : "flex-row"
                 )}
                 style={{ backgroundColor: item.color }}
                 android_ripple={{ color: "#fffff22" }}
@@ -70,7 +76,7 @@ export default function Index() {
                   <View
                     className={cn(
                       "offer-card__info",
-                      isEven ? "pl-10" : "pr-10",
+                      isEven ? "pl-10" : "pr-10"
                     )}
                   >
                     <Text className="leading-tight text-white h1-bold">
