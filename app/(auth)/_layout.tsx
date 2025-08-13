@@ -10,6 +10,7 @@ import {
 import { Redirect, Slot } from "expo-router";
 import { images } from "@/constants";
 import useAuthStore from "@/store/auth.store";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function AuthLayout() {
   const { isAuthenticated } = useAuthStore();
@@ -17,29 +18,37 @@ export default function AuthLayout() {
   if (isAuthenticated) return <Redirect href="/" />;
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
-      <ScrollView
-        className="h-full bg-white"
-        keyboardShouldPersistTaps="handled"
+    <SafeAreaView style={{ flex: 1 }}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
       >
-        <View
-          className="relative w-full"
-          style={{ height: Dimensions.get("screen").height / 2.25 }}
+        <ScrollView
+          contentInsetAdjustmentBehavior="automatic"
+          keyboardShouldPersistTaps="handled"
+          keyboardDismissMode={
+            Platform.OS === "ios" ? "interactive" : "on-drag"
+          }
+          style={{ flex: 1, backgroundColor: "#fff" }}
         >
-          <ImageBackground
-            source={images.loginGraphic}
-            className="rounded-b-lg size-full"
-            resizeMode="stretch"
-          />
-          <Image
-            source={images.logo}
-            className="absolute z-10 self-center size-48 -bottom-16"
-          />
-        </View>
-        <Slot />
-      </ScrollView>
-    </KeyboardAvoidingView>
+          <View
+            className="relative w-full"
+            style={{ height: Dimensions.get("screen").height / 2.25 }}
+          >
+            <ImageBackground
+              source={images.loginGraphic}
+              className="rounded-b-lg size-full"
+              resizeMode="stretch"
+            />
+            <Image
+              source={images.logo}
+              className="absolute z-10 self-center size-48 -bottom-16"
+            />
+          </View>
+          <Slot />
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }

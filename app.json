@@ -11,7 +11,7 @@
     "androidStatusBar": {
       "backgroundColor": "#000000",
       "barStyle": "light-content",
-      "translucent": true
+      "translucent": false
     },
     "androidNavigationBar": {
       "backgroundColor": "#000000",
@@ -26,6 +26,7 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
+      "softwareKeyboardLayoutMode": "pan",
       "package": "com.sahilhasnain.food_delivery_app"
     },
     "web": {

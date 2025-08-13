@@ -6,6 +6,7 @@ import { useFonts } from "expo-font";
 import useAuthStore from "@/store/auth.store";
 import * as NavigationBar from "expo-navigation-bar";
 import { StatusBar } from "expo-status-bar";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import "./globals.css";
 
@@ -37,6 +38,9 @@ export default function RootLayout() {
         try {
           await NavigationBar.setBackgroundColorAsync("#000000");
           await NavigationBar.setButtonStyleAsync("light");
+          // Ensure the navigation bar insets the content and doesn't overlay it
+          await NavigationBar.setBehaviorAsync("inset-swipe");
+          await NavigationBar.setPositionAsync("relative");
           await NavigationBar.setVisibilityAsync("visible");
         } catch {}
       })();
@@ -65,10 +69,10 @@ export default function RootLayout() {
   }
 
   return (
-    <>
+    <SafeAreaProvider>
       <StatusBar style="light" translucent={false} backgroundColor="#000000" />
       <Stack screenOptions={{ headerShown: false }} />
-    </>
+    </SafeAreaProvider>
   );
 }
 
