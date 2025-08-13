@@ -10,6 +10,7 @@ import {
 import { Redirect, Slot } from "expo-router";
 import { images } from "@/constants";
 import useAuthStore from "@/store/auth.store";
+import FocusAwareStatusBar from "@/components/FocusAwareStatusBar";
 
 export default function AuthLayout() {
   const { isAuthenticated } = useAuthStore();
@@ -23,6 +24,11 @@ export default function AuthLayout() {
         behavior={Platform.OS === "ios" ? "padding" : undefined}
         keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
       >
+        <FocusAwareStatusBar
+          style="light"
+          backgroundColor="#000000"
+          translucent={true}
+        />
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           keyboardShouldPersistTaps="handled"
