@@ -1,9 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
-import { View, Image, StyleSheet } from "react-native";
+import { View, Image, StyleSheet, Platform } from "react-native";
 import { Stack, useRouter } from "expo-router";
 import { useFonts } from "expo-font";
 import useAuthStore from "@/store/auth.store";
+import * as SystemUI from "expo-system-ui";
+import * as NavigationBar from "expo-navigation-bar";
+import { StatusBar } from "expo-status-bar";
 
 import "./globals.css";
 
@@ -28,6 +31,20 @@ export default function RootLayout() {
     fetchAuthenticatedUser();
   }, []);
 
+  // Ensure system bars are opaque and content doesn't draw under nav bar on Android
+  useEffect(() => {
+    if (Platform.OS === "android") {
+      (async () => {
+        try {
+          await SystemUI.setBackgroundColorAsync("#ffffff");
+          await NavigationBar.setBackgroundColorAsync("#000000");
+          await NavigationBar.setButtonStyleAsync("light");
+          await NavigationBar.setVisibilityAsync("visible");
+        } catch {}
+      })();
+    }
+  }, []);
+
   useEffect(() => {
     if (!isLoading && fontsLoaded) {
       if (isAuthenticated) {
@@ -49,7 +66,12 @@ export default function RootLayout() {
     );
   }
 
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return (
+    <>
+      <StatusBar style="light" translucent={false} backgroundColor="#000000" />
+      <Stack screenOptions={{ headerShown: false }} />
+    </>
+  );
 }
 
 const styles = StyleSheet.create({

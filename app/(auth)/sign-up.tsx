@@ -59,15 +59,15 @@ const SignUp = () => {
 
       <CustomButton title="Sign Up" isLoading={isSubmitting} onPress={submit} />
 
-      <View className="flex flex-row justify-center gap-2 mt-5">
-        <Text className="text-gray-100 base-regular">
+      <View className="flex flex-row justify-center gap-2 -mt-7">
+        <Text className="text-gray-100 base-regular !text-[16px]">
           Already have an account?
         </Text>
-        <Link href="/sign-in" className="base-bold text-primary">
+        <Link href="/sign-in" className="base-bold text-primary !text-[16px]">
           Sign In
         </Link>
       </View>
-      <DeveloperCredit className="mb-4 -mt-8" />
+      <DeveloperCredit className="mb-5 -mt-10" />
     </View>
   );
 };

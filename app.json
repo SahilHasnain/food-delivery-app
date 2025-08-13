@@ -8,6 +8,15 @@
     "scheme": "fastfood",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "androidStatusBar": {
+      "backgroundColor": "#000000",
+      "barStyle": "light-content",
+      "translucent": false
+    },
+    "androidNavigationBar": {
+      "backgroundColor": "#000000",
+      "barStyle": "light-content"
+    },
     "ios": {
       "supportsTablet": true
     },
@@ -16,7 +25,8 @@
         "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": false,
+      "package": "com.sahilhasnain.food_delivery_app"
     },
     "web": {
       "bundler": "metro",
@@ -31,7 +41,7 @@
           "image": "./assets/images/splash-v1.png",
           "resizeMode": "cover",
           "backgroundColor": "#ffffff",
-          "statusBarTranslucent": true
+          "statusBarTranslucent": false
         }
       ]
     ],
