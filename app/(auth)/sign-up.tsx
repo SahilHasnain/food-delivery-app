@@ -5,6 +5,7 @@ import CustomButton from "@/components/CustomButton";
 import { useState } from "react";
 import { createUser } from "@/lib/appwrite";
 import DeveloperCredit from "@/components/DeveloperCredit";
+import useAuthStore from "@/store/auth.store";
 
 const SignUp = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -16,14 +17,15 @@ const SignUp = () => {
     if (!name || !email || !password)
       return Alert.alert(
         "Error",
-        "Please enter valid email address & password.",
+        "Please enter valid email address & password."
       );
 
     setIsSubmitting(true);
 
     try {
       await createUser({ email, password, name });
-
+      // Ensure global auth state is refreshed before navigating
+      await useAuthStore.getState().fetchAuthenticatedUser();
       router.replace("/");
     } catch (error: any) {
       Alert.alert("Error", error.message);
