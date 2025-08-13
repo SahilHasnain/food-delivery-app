@@ -46,8 +46,6 @@ export const createUser = async ({
     const newAccount = await account.create(ID.unique(), email, password, name);
     if (!newAccount) throw Error;
 
-    await signIn({ email, password });
-
     const avatarUrl = avatars.getInitialsURL(name);
 
     return await databases.createDocument(
